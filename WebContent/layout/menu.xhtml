@@ -845,14 +845,15 @@
 							target="#{pantallaBean.methodCurrent}" value="equalizationLeeLIP" />
 					</a4j:support>
 				</rich:menuItem>
-				
+
 				<rich:menuItem submitMode="ajax" ajaxSingle="true"
 					value="#{tag['menu.equalization.Global']}">
 					<a4j:support event="onclick"
 						action="#{pantallaBean.execute_method()}"
 						reRender="table,menu,process,imgSelect,imgReconstruction">
 						<f:setPropertyActionListener
-							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_Global" />
+							target="#{pantallaBean.methodCurrent}"
+							value="Ecualizacion_Global" />
 						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
 							value="0" />
 					</a4j:support>
@@ -896,7 +897,8 @@
 						action="#{pantallaBean.execute_method()}"
 						reRender="table,menu,process,imgSelect,imgReconstruction">
 						<f:setPropertyActionListener
-							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_MMBEBHE" />
+							target="#{pantallaBean.methodCurrent}"
+							value="Ecualizacion_MMBEBHE" />
 						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
 							value="0" />
 					</a4j:support>
@@ -907,7 +909,8 @@
 						action="#{pantallaBean.execute_method()}"
 						reRender="table,menu,process,imgSelect,imgReconstruction">
 						<f:setPropertyActionListener
-							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_Infrarrojo2PL" />
+							target="#{pantallaBean.methodCurrent}"
+							value="Ecualizacion_Infrarrojo2PL" />
 						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
 							value="0" />
 					</a4j:support>
@@ -943,6 +946,11 @@
 						reRender="tab,table,menu" />
 
 				</h:selectOneMenu>
+
+				<s:link id="menuLogoutId" view="/home.xhtml"
+					action="#{identity.logout()}" value="Logout"
+					rendered="#{identity.loggedIn}" propagation="none" />
+
 
 			</rich:toolBarGroup>
 		</rich:toolBar>
@@ -992,18 +1000,18 @@
 			<rich:messages style="color:red;"></rich:messages>
 			<h:panelGrid columns="1">
 				<ul class="bullets">
-				<li><strong>Martin Poletti</strong> Estudiante de la
-						carrera Ingenieria en Informatica de la Univ. Nacional de
-						Asuncion. Facultad Politecnica, Desarrollo y estructuracion web de
-						la aplicacion. Contacto: mpoletti@gmail.com</li>
+					<li><strong>Martin Poletti</strong> Estudiante de la carrera
+						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
+						Facultad Politecnica, Desarrollo y estructuracion web de la
+						aplicacion. Contacto: mpoletti@gmail.com</li>
 					<li><strong>Santiago Vera</strong> Estudiante de la carrera
 						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
 						Facultad Politecnica, Desarrollo y estructuracion web de la
 						aplicacion.</li>
-					<li><strong>Pablo Lopez</strong> Estudiante de la
-						carrera Ingenieria en Informatica de la Univ. Nacional de
-						Asuncion. Facultad Politecnica, Desarrollo y estructuracion web de
-						la aplicacion. Contacto: srpablino@gmail.com</li>
+					<li><strong>Pablo Lopez</strong> Estudiante de la carrera
+						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
+						Facultad Politecnica, Desarrollo y estructuracion web de la
+						aplicacion. Contacto: srpablino@gmail.com</li>
 					<li><strong>Akira Shimosoeda</strong> Estudiante de la carrera
 						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
 						Facultad Politecnica, Desarrollo y estructuracion web de la
