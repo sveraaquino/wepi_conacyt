@@ -1,0 +1,47 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+
+        <rich:page width="1366">		
+			<f:facet name="header">
+
+				<h:panelGroup >
+					<h:graphicImage value="/img/banner_wepi.png" width="1261" />
+					<center>
+						<ui:include src="/layout/menu.xhtml" />
+					</center>
+				</h:panelGroup>
+			</f:facet>
+
+			<a4j:loadBundle var="tag" basename="tags.tags" />
+			<rich:tabPanel switchType="client" id="tab" height="600">
+				<rich:tab  label="#{tag['home.tab.process']}" id="tab1"
+					rendered="#{pantallaBean.isEmpty()}">
+					<center>
+						<ui:include src="/layout/process.xhtml" />
+					</center>
+				</rich:tab>
+				<rich:tab label="#{tag['home.tab.fileUpload']}">
+
+					<center>
+							<ui:include src="/layout/fileUpload.xhtml" />
+					</center>
+					
+				</rich:tab>
+
+			</rich:tabPanel>
+			<center>
+				<ui:include src="/layout/listaImagenes.xhtml" />
+			</center>
+		</rich:page>
+    </ui:define>
+</ui:composition>

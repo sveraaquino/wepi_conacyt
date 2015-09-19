@@ -1,0 +1,2805 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:xforms="http://www.w3.org/1999/xhtml">
+
+	<style>
+.pic {
+	margin-bottom: -4px;
+	margin-right: 2px;
+}
+
+.search .rich-menu-item-hover {
+	background-color: transparent;
+	border-color: transparent;
+}
+</style>
+
+	<h:form>
+
+		<rich:toolBar id="menu">
+			<a4j:loadBundle var="tag" basename="tags.tags" />
+
+			<!--menu binarizacion  -->
+			<rich:dropDownMenu rendered="#{pantallaBean.isGray()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.binarization']}" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.binarization.local']}" ajaxSingle="true"
+					oncomplete="#{rich:component('binarizationLocalPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="localThresholding" />
+					</a4j:support>
+				</rich:menuItem>
+
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.binarization.global']}" ajaxSingle="true"
+					oncomplete="#{rich:component('binarizationGlobalPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="globalThresholding" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.binarization.manual']}" ajaxSingle="true"
+					oncomplete="#{rich:component('binarizationManualPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="thresholdManual" />
+					</a4j:support>
+				</rich:menuItem>
+
+
+			</rich:dropDownMenu>
+
+			<!-- menu seccion filtros -->
+			<rich:dropDownMenu rendered="#{pantallaBean.isGray()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.filters']}" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuGroup value="#{tag['menu.filters.noLineal']}">
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.mediana']}" ajaxSingle="true"
+						oncomplete="#{rich:component('filterMedianaPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="filterMediana" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.medianWeight']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterMedianWeightPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="medianWeightInvoke" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterGeometricMean']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterGeometricMeanPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="filterGeometricMean" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterHarmonicMean']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterHarmonicMeanPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="filterHarmonicMean" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterContraharmonicMean']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterContraharmonicMeanPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="2" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="filterContraharmonicMean" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterKuwahara']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterKuwaharaPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="filterKuwahara" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterLipschitz']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterLipschitzPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="3" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="filterLipschitz" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						value="#{tag['menu.filters.noLineal.filterNagaoMatsuyama']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="filterNagaoMatsuyama" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						value="#{tag['menu.filters.noLineal.filterNagaoMatsuyamaRecursive']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="filterNagaoMatsuyamaRecursive" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterAlphaTrimmedMean']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterAlphaTrimmedMeanPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="2" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="filterAlphaTrimmedMean" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterYPMean']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterYPMeanPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="2" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="filterYPMean" />
+						</a4j:support>
+					</rich:menuItem>
+
+				</rich:menuGroup>
+				<rich:menuGroup value="#{tag['menu.filters.lineal']}">
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.lineal.mean']}" ajaxSingle="true"
+						oncomplete="#{rich:component('filterMeanPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="filterMean" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.lineal.meanWeight']}" ajaxSingle="true"
+						oncomplete="#{rich:component('filterMeanWeightPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="meanWeightInvoke" />
+						</a4j:support>
+					</rich:menuItem>
+				</rich:menuGroup>
+				<rich:menuGroup value="#{tag['menu.filters.noise']}">
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noise.gaussian']}" ajaxSingle="true"
+						oncomplete="#{rich:component('noiseGaussianPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="2" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="noiseGaussian" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noise.uniform']}" ajaxSingle="true"
+						oncomplete="#{rich:component('noiseUniformPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="2" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="noiseUniform" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noise.binomial']}" ajaxSingle="true"
+						oncomplete="#{rich:component('noiseBinomialPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="2" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="noiseBinomial" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noise.gamma']}" ajaxSingle="true"
+						oncomplete="#{rich:component('noiseGammaPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="noiseGamma" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noise.poisson']}" ajaxSingle="true"
+						oncomplete="#{rich:component('noisePoissonPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="noisePoisson" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noise.exponential']}" ajaxSingle="true"
+						oncomplete="#{rich:component('noiseExponentialPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="noiseExponential" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noise.saltAndPepper']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('noiseSaltAndPepperPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}"
+								value="noiseSaltAndPepper" />
+						</a4j:support>
+					</rich:menuItem>
+				</rich:menuGroup>
+
+			</rich:dropDownMenu>
+
+			<!-- menu seccion Imagen -->
+
+			<rich:dropDownMenu rendered="#{pantallaBean.isEmpty()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.image']}" />
+					</h:panelGroup>
+				</f:facet>
+
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					rendered="#{pantallaBean.isColor()}" value="#{tag.toGray}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,menu,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="convertToGray" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuGroup value="#{tag.grayConverter}"
+					rendered="#{pantallaBean.isColor()}">
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.intensity']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="intensity" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.gleam']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="gleam" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.luminance']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="luminance" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.luma']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="luma" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.lightness']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="grayConverter" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.value']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="value" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.luster']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="luster" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.mindec']}">
+						<a4j:support event="onclick"
+							action="#{pantallaBean.execute_method()}"
+							reRender="table,process,imgSelect,menu,imgReconstruction">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="minDecomposition" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="0" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.singlechannel']}"
+						oncomplete="#{rich:component('singleChannelPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="singleChannel" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.grayshades']}"
+						oncomplete="#{rich:component('grayShadesPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="grayShades" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="1" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax" ajaxSingle="true"
+						rendered="#{pantallaBean.isColor()}"
+						value="#{tag['menu.color.converter.weighting']}"
+						oncomplete="#{rich:component('weightingPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="weighting" />
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="3" />
+						</a4j:support>
+					</rich:menuItem>
+				</rich:menuGroup>
+				<rich:menuItem submitMode="ajax"
+					rendered="#{pantallaBean.isColor()}"
+					value="#{tag['menu.image.spaceConverter']}" ajaxSingle="true"
+					oncomplete="#{rich:component('converterPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="3" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="spaceConverter" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					rendered="#{pantallaBean.isGray()}"
+					value="#{tag['menu.image.backgroundCorrection']}"
+					oncomplete="#{rich:component('backgroundPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}"
+							value="backgroundCorrection" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="3" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.image.deinterlace']}"
+					oncomplete="#{rich:component('deinterlacePanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="deinterlace" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true" value="FFT">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,menu,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="fft" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.image.invertImage']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="invertirImagen" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.image.sharpen']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="sharpen" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.image.blur']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="blur" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					rendered="#{pantallaBean.isBinary()}"
+					value="#{tag['menu.image.createMarker']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,menu,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="createMarker" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					rendered="#{pantallaBean.isGray() or pantallaBean.isColor()}"
+					value="#{tag['menu.image.autoContrat']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="autoContrat" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					rendered="#{pantallaBean.isGray() or pantallaBean.isColor()}"
+					value="#{tag['menu.image.constrast']}" ajaxSingle="true"
+					oncomplete="#{rich:component('constrastPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="constrast" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					rendered="#{pantallaBean.isGray() or pantallaBean.isColor()}"
+					value="#{tag['menu.image.brightness']}" ajaxSingle="true"
+					oncomplete="#{rich:component('brightnessPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="brightness" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" value="#{tag['menu.image.operAL']}"
+					rendered="#{!pantallaBean.isColor()}" ajaxSingle="true"
+					oncomplete="#{rich:component('logicArithmeticPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="2" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="operationBetween" />
+					</a4j:support>
+
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.image.reconstruction']}"
+					rendered="#{pantallaBean.isBinary()}" ajaxSingle="true"
+					oncomplete="#{rich:component('reconstructionPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="preReconstruction" />
+					</a4j:support>
+
+				</rich:menuItem>
+
+			</rich:dropDownMenu>
+
+			<!-- menu seccion filtros de color -->
+			<rich:dropDownMenu rendered="#{pantallaBean.isColor()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.filters']}" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuGroup value="#{tag['menu.filters.noLineal']}">
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterLipschitz']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterLipschitzPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="3" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="filterLipschitz" />
+						</a4j:support>
+					</rich:menuItem>
+					<rich:menuItem submitMode="ajax"
+						value="#{tag['menu.filters.noLineal.filterKuwahara']}"
+						ajaxSingle="true"
+						oncomplete="#{rich:component('filterKuwaharaColorPanel')}.show()">
+						<a4j:support event="onclick">
+							<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+								value="2" />
+							<f:setPropertyActionListener
+								target="#{pantallaBean.methodCurrent}" value="filterKuwahara" />
+						</a4j:support>
+					</rich:menuItem>
+				</rich:menuGroup>
+			</rich:dropDownMenu>
+
+			<!-- menu seccion Morfologias gris-->
+
+			<rich:dropDownMenu
+				rendered="#{pantallaBean.isEmpty() == !pantallaBean.isColor()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.morphology']}" />
+					</h:panelGroup>
+				</f:facet>
+
+
+				<rich:menuItem submitMode="ajax" rendered="#{pantallaBean.isGray()}"
+					value="#{tag['menu.morphology.gray']}" ajaxSingle="true"
+					oncomplete="#{rich:component('binaryDilatePanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="5" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="morphology" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					rendered="#{pantallaBean.isBinary()}"
+					value="#{tag['menu.morphology.binary']}" ajaxSingle="true"
+					oncomplete="#{rich:component('binaryTPanel')}.show()"
+					reRender="binaryTPanel">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="5" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="morphology" />
+					</a4j:support>
+				</rich:menuItem>
+			</rich:dropDownMenu>
+			<rich:dropDownMenu rendered="#{pantallaBean.isEmpty()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.segmentation']}" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.segmentation.borderDetection']}"
+					ajaxSingle="true"
+					oncomplete="#{rich:component('segmentationPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}"
+							value="segmentationSelection" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.segmentation.canny']}" ajaxSingle="true"
+					oncomplete="#{rich:component('cannyPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="4" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="cannyEdgeDetector" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					rendered="#{pantallaBean.isGray()}"
+					value="#{tag['menu.segmentation.entropy']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,menu,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="entropyThreshold" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					rendered="#{!pantallaBean.isColor()}" value="Watershed">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,process,imgSelect,menu,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="watershed" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+			</rich:dropDownMenu>
+
+			<!-- menu seccion Morfologias color-->
+
+			<rich:dropDownMenu
+				rendered="#{pantallaBean.isEmpty() and pantallaBean.isColor()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.morphology']}" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuItem submitMode="ajax"
+					value="LCCA #{tag['menu.morphology.color.dilate']}"
+					ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphologyPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="2" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="dilate" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="LCCA #{tag['menu.morphology.color.erode']}"
+					ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphologyPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="2" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="erode" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.morphology.color.dilate']}" ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="colorDilate" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.morphology.color.erode']}" ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="colorErode" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.morphology.opening']}" ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="colorOpening" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.morphology.closing']}" ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="colorClosing" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" value="TopHat" ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="topHat" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" value="BottomHat" ajaxSingle="true"
+					oncomplete="#{rich:component('colorMorphPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="1" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="bottomHat" />
+					</a4j:support>
+				</rich:menuItem>
+			</rich:dropDownMenu>
+
+
+			<!--menu EQUALIZATION  -->
+			<rich:dropDownMenu rendered="#{pantallaBean.isGray()}">
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag['menu.equalization']}" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.equalization.lee']}" ajaxSingle="true"
+					oncomplete="#{rich:component('equalizationLeePanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="3" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="equalizationLee" />
+					</a4j:support>
+				</rich:menuItem>
+
+				<rich:menuItem submitMode="ajax"
+					value="#{tag['menu.equalization.leeLIP']}" ajaxSingle="true"
+					oncomplete="#{rich:component('equalizationLeeLIPPanel')}.show()">
+					<a4j:support event="onclick">
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="3" />
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="equalizationLeeLIP" />
+					</a4j:support>
+				</rich:menuItem>
+				
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.equalization.Global']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,menu,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_Global" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.equalization.BBHE']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,menu,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_BBHE" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.equalization.BHEPL']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,menu,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_BHEPL" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.equalization.DSIHE']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,menu,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_DSIHE" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.equalization.MMBEBHE']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,menu,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_MMBEBHE" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+				<rich:menuItem submitMode="ajax" ajaxSingle="true"
+					value="#{tag['menu.equalization.Infrarrojo2PL']}">
+					<a4j:support event="onclick"
+						action="#{pantallaBean.execute_method()}"
+						reRender="table,menu,process,imgSelect,imgReconstruction">
+						<f:setPropertyActionListener
+							target="#{pantallaBean.methodCurrent}" value="Ecualizacion_Infrarrojo2PL" />
+						<f:setPropertyActionListener target="#{pantallaBean.numParam}"
+							value="0" />
+					</a4j:support>
+				</rich:menuItem>
+			</rich:dropDownMenu>
+
+
+			<rich:dropDownMenu>
+				<f:facet name="label">
+					<h:panelGroup>
+						<h:outputText value="#{tag.about}" />
+					</h:panelGroup>
+				</f:facet>
+				<rich:menuItem submitMode="ajax" value="#{tag.wepi}"
+					ajaxSingle="true"
+					oncomplete="#{rich:component('wepiPanel')}.show()">
+				</rich:menuItem>
+
+				<rich:menuItem submitMode="ajax" value="#{tag.developers}"
+					ajaxSingle="true"
+					oncomplete="#{rich:component('developersPanel')}.show()">
+				</rich:menuItem>
+
+			</rich:dropDownMenu>
+
+			<rich:toolBarGroup location="right">
+				<h:selectOneMenu value="#{changeLanguage.language}"
+					defaultLabel="#{tag.languages}" immediate="true">
+					<f:selectItem itemLabel="English" itemValue="2" />
+					<f:selectItem itemLabel="Español" itemValue="1" />
+					<f:selectItem itemLabel="Português" itemValue="3" />
+					<a4j:support event="onchange" action="#{changeLanguage.change()}"
+						reRender="tab,table,menu" />
+
+				</h:selectOneMenu>
+
+			</rich:toolBarGroup>
+		</rich:toolBar>
+	</h:form>
+
+
+
+
+
+	<rich:modalPanel id="wepiPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.wepi}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkWepi"
+					styleClass="hidelink" />
+				<rich:componentControl for="wepiPanel" attachTo="hidelinkWepi"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<center>
+					<h:graphicImage value="/img/logos.png" />
+				</center>
+				<h:outputText value="#{tag.loginText}" />
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+
+	<rich:modalPanel id="developersPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.wepi}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkWepiDEV"
+					styleClass="hidelink" />
+				<rich:componentControl for="developersPanel"
+					attachTo="hidelinkWepiDEV" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<ul class="bullets">
+				<li><strong>Martin Poletti</strong> Estudiante de la
+						carrera Ingenieria en Informatica de la Univ. Nacional de
+						Asuncion. Facultad Politecnica, Desarrollo y estructuracion web de
+						la aplicacion. Contacto: mpoletti@gmail.com</li>
+					<li><strong>Santiago Vera</strong> Estudiante de la carrera
+						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
+						Facultad Politecnica, Desarrollo y estructuracion web de la
+						aplicacion.</li>
+					<li><strong>Pablo Lopez</strong> Estudiante de la
+						carrera Ingenieria en Informatica de la Univ. Nacional de
+						Asuncion. Facultad Politecnica, Desarrollo y estructuracion web de
+						la aplicacion. Contacto: srpablino@gmail.com</li>
+					<li><strong>Akira Shimosoeda</strong> Estudiante de la carrera
+						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
+						Facultad Politecnica, Desarrollo y estructuracion web de la
+						aplicacion. Contacto: akirashimosoeda@gmail.com</li>
+					<li><strong>Marcos "Nobu" Aquino</strong> Estudiante de la
+						carrera Ingenieria en Informatica de la Univ. Nacional de
+						Asuncion. Facultad Politecnica, Desarrollo y estructuracion web de
+						la aplicacion. Contacto: aquinoishii@gmail.com</li>
+					<li><strong>Jordan Ayala</strong> Estudiante de la carrera
+						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
+						Facultad Politecnica, Desarrollo y estructuracion web de la
+						aplicacion. Contacto: jayala1993@outlook.com</li>
+					<li><strong>Sebastian Gonzalez</strong> Estudiante de la
+						carrera Ingenieria en Informatica de la Univ. Nacional de
+						Asuncion. Facultad Politecnica, Desarrollo y estructuracion web de
+						la aplicacion. Contacto: sgaserett@gmail.com</li>
+					<li><strong>Rodrigo Santos</strong> Estudiante de la carrera
+						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
+						Facultad Politecnica, Desarrollo y estructuracion web de la
+						aplicacion. Contacto: rodrigogsb14@hotmail.com</li>
+					<li><strong>Sergio Orue</strong> Estudiante de la carrera
+						Ingenieria en Informatica de la Univ. Nacional de Asuncion.
+						Facultad Politecnica, Desarrollo y estructuracion web de la
+						aplicacion. Contacto: sdo1090@gmail.com</li>
+				</ul>
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+
+	<!-- seccion ingreso de parametros  -->
+	<rich:modalPanel id="converterPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkConverter"
+					styleClass="hidelink" />
+				<rich:componentControl for="converterPanel"
+					attachTo="hidelinkConverter" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.image.spaceConverter.from']}" />
+						<h:selectOneMenu value="#{pantallaBean.paramAuxStr}"
+							required="true">
+							<f:selectItem itemValue="RGB" itemLabel="RGB" />
+							<f:selectItem itemValue="HSB" itemLabel="HSB" />
+							<f:selectItem itemValue="LAB" itemLabel="LAB" />
+							<f:selectItem itemValue="XYZ" itemLabel="XYZ" />
+						</h:selectOneMenu>
+						<h:outputText value="#{tag['menu.image.spaceConverter.to']}" />
+						<h:selectOneMenu value="#{pantallaBean.paramAuxStr}"
+							required="true">
+							<f:selectItem itemValue="RGB" itemLabel="RGB" />
+							<f:selectItem itemValue="HSB" itemLabel="HSB" />
+							<f:selectItem itemValue="LAB" itemLabel="LAB" />
+							<f:selectItem itemValue="XYZ" itemLabel="XYZ" />
+						</h:selectOneMenu>
+						<h:outputText
+							value="#{tag['menu.image.spaceConverter.whitepoint']}" />
+						<h:selectOneMenu value="#{pantallaBean.paramAuxStr}"
+							required="true">
+							<f:selectItem itemValue="D50" itemLabel="D50" />
+							<f:selectItem itemValue="D50" itemLabel="D50" />
+							<f:selectItem itemValue="D65" itemLabel="D65" />
+							<f:selectItem itemValue="D75" itemLabel="D75" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('converterPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="singleChannelPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText
+				value="#{tag['menu.color.converter.singlechannel.choose']}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png"
+					id="hidelinksingleChannelPanel" styleClass="hidelink" />
+				<rich:componentControl for="singleChannelPanel"
+					attachTo="hidelinksingleChannelPanel" operation="hide"
+					event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:selectOneRadio id="colorChannel"
+							value="#{pantallaBean.paramAuxInt}" required="true">
+							<f:selectItem itemValue="0" itemLabel="Red" />
+							<f:selectItem itemValue="1" itemLabel="Green" />
+							<f:selectItem itemValue="2" itemLabel="Blue" />
+						</h:selectOneRadio>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('singleChannelPanel')}.hide();"
+					reRender="table,process,imgSelect,menu,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="grayShadesPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkshadesPanel"
+					styleClass="hidelink" />
+				<rich:componentControl for="grayShadesPanel"
+					attachTo="hidelinkshadesPanel" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.color.converter.grayshades.param']}" />
+						<rich:inputNumberSlider value="#{pantallaBean.paramAuxInt}"
+							minValue="2" maxValue="256" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('grayShadesPanel')}.hide();"
+					reRender="table,process,imgSelect,menu,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="weightingPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag['menu.color.converter.weighting.param']}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkweightingPanel"
+					styleClass="hidelink" />
+				<rich:componentControl for="weightingPanel"
+					attachTo="hidelinkweightingPanel" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="3">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="6">
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" size="10" />
+						<h:outputText value="*R +" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" size="10" />
+						<h:outputText value="*G +" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" size="10" />
+						<h:outputText value="*B" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('weightingPanel')}.hide();"
+					reRender="table,process,imgSelect,menu,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="filterMeanPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkMean"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterMeanPanel" attachTo="hidelinkMean"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.lineal.mean.size']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterMeanPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+
+	<rich:modalPanel id="filterMedianaPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelink"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterMedianaPanel" attachTo="hidelink"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noLineal.mediana.size']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterMedianaPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<!-- new noLineal filters -->
+	<rich:modalPanel id="filterGeometricMeanPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkGeometric"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterGeometricMeanPanel"
+					attachTo="hidelinkGeometric" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.Geometric.dim']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterGeometricMeanPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+	<rich:modalPanel id="filterHarmonicMeanPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkHarmonic"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterHarmonicMeanPanel"
+					attachTo="hidelinkHarmonic" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noLineal.harmonic.dim']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterHarmonicMeanPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+	<rich:modalPanel id="filterContraharmonicMeanPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkContraharmonic"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterContraharmonicMeanPanel"
+					attachTo="hidelinkContraharmonic" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.contraharmonic.dim']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.contraharmonic.harmonic']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterContraharmonicMeanPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="filterKuwaharaColorPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkKuwaharaColor"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterKuwaharaColorPanel"
+					attachTo="hidelinkKuwaharaColor" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noLineal.kuwahara.dim']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText value="#{tag['menu.filters.noLineal.kuwahara.rgb']}" />
+						<h:selectBooleanCheckbox value="#{pantallaBean.paramAuxBoolean}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterKuwaharaColorPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="backgroundPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkBackgroundPanel"
+					styleClass="hidelink" />
+				<rich:componentControl for="backgroundPanel"
+					attachTo="hidelinkBackgroundPanel" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.image.backgroundCorrection.iterations']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText
+							value="#{tag['menu.image.backgroundCorrection.radius']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText
+							value="#{tag['menu.image.backgroundCorrection.contrast']}" />
+						<h:selectBooleanCheckbox value="#{pantallaBean.paramAuxBoolean}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('backgroundPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="filterLipschitzPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkLipschitz"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterLipschitzPanel"
+					attachTo="hidelinkLipschitz" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.filterLipschitz.slope']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="TopDown" />
+						<h:selectBooleanCheckbox value="#{pantallaBean.paramAuxBoolean}" />
+						<h:outputText value="TopHat" />
+						<h:selectBooleanCheckbox value="#{pantallaBean.paramAuxBoolean}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterLipschitzPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+
+	<rich:modalPanel id="colorMorphologyPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag['menu.morphology.color.parameters']}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkColorMorphology"
+					styleClass="hidelink" />
+				<rich:componentControl for="colorMorphologyPanel"
+					attachTo="hidelinkColorMorphology" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.morphology.color.m']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText value="#{tag['menu.morphology.color.n']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('colorMorphologyPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="colorMorphPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkColorMorph"
+					styleClass="hidelink" />
+				<rich:componentControl for="colorMorphPanel"
+					attachTo="hidelinkColorMorph" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.morphology.binary.iterations']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('colorMorphPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="filterKuwaharaPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkKuwahara"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterKuwaharaPanel"
+					attachTo="hidelinkKuwahara" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noLineal.kuwahara.dim']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterKuwaharaPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="filterAlphaTrimmedMeanPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkAlphaTrimmed"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterAlphaTrimmedMeanPanel"
+					attachTo="hidelinkAlphaTrimmed" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.alphaTrimmed.dim']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.alphaTrimmed.alpha']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterAlphaTrimmedMeanPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+	<rich:modalPanel id="filterYPMeanPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkYpMean"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterYPMeanPanel"
+					attachTo="hidelinkYpMean" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noLineal.ypMean.dim']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText value="#{tag['menu.filters.noLineal.ypMean.p']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterYPMeanPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+
+
+
+	<!-- menu morfologia binaria -->
+
+	<rich:modalPanel id="binaryDilatePersonalizedPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkPersonalized"
+					styleClass="hidelink" />
+				<rich:componentControl for="binaryDilatePersonalizedPanel"
+					attachTo="hidelinkPersonalized" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.morphology.MorphologySelect']}" />
+						<h:selectOneMenu value="#{pantallaBean.paramAuxStr}"
+							required="true">
+							<f:selectItem itemValue="dilate" itemLabel="Dilate" />
+							<f:selectItem itemValue="erode" itemLabel="Erode" />
+							<f:selectItem itemValue="close" itemLabel="Close" />
+							<f:selectItem itemValue="externalBound"
+								itemLabel="External Bound" />
+							<f:selectItem itemValue="internalBound"
+								itemLabel="Internal Bound" />
+							<f:selectItem itemValue="externalInternalBound"
+								itemLabel="External Internal Bound" />
+							<f:selectItem itemValue="open" itemLabel="Open" />
+						</h:selectOneMenu>
+
+						<h:outputText value="#{tag['menu.morphology.matriz']}" />
+						<h:inputTextarea value="#{pantallaBean.paramAuxStr}">
+							<f:validateLength maximum="100"></f:validateLength>
+						</h:inputTextarea>
+
+						<h:outputText value="#{tag['menu.morphology.centroX']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText value="#{tag['menu.morphology.centroY']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<h:outputText value="#{tag['menu.morphology.binary.iterations']}" />
+						<rich:inputNumberSpinner id="spinnerIteration"
+							value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('binaryDilatePersonalizedPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+
+	<rich:modalPanel id="binaryDilatePanel" autosized="true" width="500">
+		<script type="text/javascript">
+	    function handleChangeBinaryDilate(selection) {
+	    	if(selection=="personalized")
+		        {
+		        	
+	    			updateParamBinaryDilate('5','morphoInvoke');
+					#{rich:component('binaryDilatePanel')}.hide();
+					#{rich:component('binaryDilatePersonalizedPanel')}.show();   		     
+		        }
+	    } 
+		</script>
+
+		<a4j:region>
+			<h:form id="hiddenFormBinaryDilate">
+				<a4j:jsFunction name="updateParamBinaryDilate">
+					<a4j:actionparam name="param1" assignTo="#{pantallaBean.numParam}" />
+					<a4j:actionparam name="param2"
+						assignTo="#{pantallaBean.methodCurrent}" />
+				</a4j:jsFunction>
+			</h:form>
+		</a4j:region>
+
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="binaryDilate"
+					styleClass="hidelink" />
+				<rich:componentControl for="binaryDilatePanel"
+					attachTo="binaryDilate" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+
+		<h:form id="formulario">
+
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="2">
+				<rich:panel bodyClass="rich-laguna-panel-no-header">
+					<a4j:region>
+						<h:selectOneRadio id="radioValue"
+							value="#{pantallaBean.pathImageSelection}" required="true"
+							onchange="handleChangeBinaryDilate(this.value)">
+							<f:selectItem itemValue="cross" itemLabel="Cross" />
+							<f:selectItem itemValue="square" itemLabel="Square" />
+							<f:selectItem itemValue="vertical" itemLabel="Vertical" />
+							<f:selectItem itemValue="horizontal" itemLabel="Horizontal" />
+							<f:selectItem itemValue="circle" itemLabel="Circle" />
+							<f:selectItem itemValue="personalized" itemLabel="Personalized" />
+							<a4j:support event="onclick" reRender="imgEstruc" />
+						</h:selectOneRadio>
+						<h:selectOneMenu value="#{pantallaBean.pathImageView}"
+							required="true">
+							<f:selectItem itemValue="dilate" itemLabel="Dilate" />
+							<f:selectItem itemValue="erode" itemLabel="Erode" />
+							<f:selectItem itemValue="open" itemLabel="Open" />
+							<f:selectItem itemValue="close" itemLabel="Close" />
+							<f:selectItem itemValue="topHat" itemLabel="Top Hat" />
+							<f:selectItem itemValue="bottomHay" itemLabel="Bottom Hat" />
+							<f:selectItem itemValue="externalBound"
+								itemLabel="External Bound" />
+							<f:selectItem itemValue="internalBound"
+								itemLabel="Internal Bound" />
+							<f:selectItem itemValue="externalInternalBound"
+								itemLabel="External Internal Bound" />
+
+						</h:selectOneMenu>
+					</a4j:region>
+					<br />
+					<br />
+					<h:outputText value="#{tag['menu.morphology.binary.iterations']}" />
+					<rich:inputNumberSpinner id="spinnerIteration"
+						value="#{pantallaBean.paramAuxInt}">
+					</rich:inputNumberSpinner>
+				</rich:panel>
+				<rich:panel bodyClass="rich-laguna-panel-no-header">
+					<a4j:outputPanel ajaxRendered="true" id="imgEstruc">
+						<h:graphicImage
+							url="img/estructurantes/#{pantallaBean.pathImageView}" />
+					</a4j:outputPanel>
+				</rich:panel>
+			</h:panelGrid>
+
+			<br />
+			<a4j:commandButton id="aceptar" value="#{tag.accept}"
+				action="#{pantallaBean.execute_method()}"
+				oncomplete="#{rich:component('binaryDilatePanel')}.hide();"
+				reRender="table,process,imgSelect,imgReconstruction" status="status" />
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="binaryTPanel" autosized="true" width="500">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="binaryT"
+					styleClass="hidelink" />
+				<rich:componentControl for="binaryTPanel" attachTo="binaryT"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+
+		<script type="text/javascript">
+	    function handleChangeBinary(selection) {
+	    	if(selection=="personalized")
+		        {
+		        	
+	    			updateParamBinary('5','morphoBinaryInvoke');
+					#{rich:component('binaryTPanel')}.hide();
+					#{rich:component('binaryDilatePersonalizedPanel')}.show();   		     
+		        }
+	    } 
+		</script>
+
+		<a4j:region>
+			<h:form id="hiddenFormBinary">
+				<a4j:jsFunction name="updateParamBinary">
+					<a4j:actionparam name="param1" assignTo="#{pantallaBean.numParam}" />
+					<a4j:actionparam name="param2"
+						assignTo="#{pantallaBean.methodCurrent}" />
+				</a4j:jsFunction>
+			</h:form>
+		</a4j:region>
+
+
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="2">
+				<rich:panel bodyClass="rich-laguna-panel-no-header">
+					<a4j:region>
+						<h:selectOneRadio value="#{pantallaBean.pathImageSelection}"
+							required="true" onchange="handleChangeBinary(this.value)">
+							<f:selectItem itemValue="cross" itemLabel="Cross" />
+							<f:selectItem itemValue="square" itemLabel="Square" />
+							<f:selectItem itemValue="vertical" itemLabel="Vertical" />
+							<f:selectItem itemValue="horizontal" itemLabel="Horizontal" />
+							<f:selectItem itemValue="circle" itemLabel="Circle" />
+							<f:selectItem itemValue="personalized" itemLabel="Personalized" />
+							<a4j:support event="onclick" reRender="imgEstruc" />
+
+						</h:selectOneRadio>
+						<h:selectOneMenu value="#{pantallaBean.pathImageView}"
+							required="true">
+							<f:selectItem itemValue="dilate" itemLabel="Dilate" />
+							<f:selectItem itemValue="erode" itemLabel="Erode" />
+							<f:selectItem itemValue="close" itemLabel="Close" />
+							<f:selectItem itemValue="open" itemLabel="Open" />
+							<f:selectItem itemValue="externalBound"
+								itemLabel="External Bound" />
+							<f:selectItem itemValue="internalBound"
+								itemLabel="Internal Bound" />
+							<f:selectItem itemValue="externalInternalBound"
+								itemLabel="External Internal Bound" />
+							<f:selectItem itemValue="BinaryOutline"
+								itemLabel="Binary Outline" />
+							<f:selectItem itemValue="Skeletonize" itemLabel="Skeletonize" />
+						</h:selectOneMenu>
+					</a4j:region>
+					<br />
+					<br />
+					<h:outputText value="#{tag['menu.morphology.binary.iterations']}" />
+					<rich:inputNumberSpinner id="spinnerIterationBinary"
+						value="#{pantallaBean.paramAuxInt}">
+					</rich:inputNumberSpinner>
+				</rich:panel>
+				<rich:panel bodyClass="rich-laguna-panel-no-header">
+
+					<a4j:outputPanel ajaxRendered="true" id="imgEstruc">
+						<h:graphicImage
+							url="img/estructurantes/#{pantallaBean.pathImageView}" />
+					</a4j:outputPanel>
+
+				</rich:panel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('binaryTPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction"
+					status="status" />
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+
+
+	<!-- menu operaciones logicas y aritmeticas -->
+	<rich:modalPanel id="logicArithmeticPanel" autosized="true" width="500">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="logArth"
+					styleClass="hidelink" />
+				<rich:componentControl for="logicArithmeticPanel" attachTo="logArth"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+
+			<rich:panel bodyClass="rich-laguna-panel-no-header">
+				<a4j:region>
+					<h:selectOneMenu id="imgSelect" value="#{pantallaBean.index}"
+						directInputSuggestions="true">
+						<f:selectItems value="#{pantallaBean.imageType}" var="aux"
+							itemLabel="#{aux.label}" itemValue="#{aux.value}" />
+						<a4j:support event="onclick" />
+					</h:selectOneMenu>
+				</a4j:region>
+				<a4j:region>
+					<h:selectOneRadio id="imgRadio" value="#{pantallaBean.paramAuxStr}"
+						directInputSuggestions="true" required="true">
+						<f:selectItem itemValue="AND" itemLabel="AND" />
+						<f:selectItem itemValue="OR" itemLabel="OR" />
+						<f:selectItem itemValue="XOR" itemLabel="XOR" />
+						<f:selectItem itemValue="MAX" itemLabel="MAX" />
+						<f:selectItem itemValue="MIN" itemLabel="MIN" />
+						<f:selectItem itemValue="DIFFERENCE" itemLabel="DIFFERENCE" />
+						<f:selectItem itemValue="MULTIPLY" itemLabel="MULTIPLY" />
+						<f:selectItem itemValue="DIVIDE" itemLabel="DIVIDE" />
+						<a4j:support event="onclick" reRender="imgRadio" />
+					</h:selectOneRadio>
+				</a4j:region>
+			</rich:panel>
+
+			<a4j:commandButton value="#{tag.accept}"
+				action="#{pantallaBean.execute_method()}"
+				oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('logicArithmeticPanel')}.hide();"
+				reRender="table,process,imgSelect,tab,imgReconstruction" />
+
+
+		</h:form>
+	</rich:modalPanel>
+
+	<!-- menu noiseUniform -->
+	<rich:modalPanel id="noiseUniformPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkUniform"
+					styleClass="hidelink" />
+				<rich:componentControl for="noiseUniformPanel"
+					attachTo="hidelinkUniform" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noise.uniform.min']}" />
+						<h:inputText id="min" value="#{pantallaBean.paramAuxDouble}">
+							<a4j:support event="keyup" render="max" />
+						</h:inputText>
+
+						<h:outputText value="#{tag['menu.filters.noise.uniform.max']}" />
+						<h:inputText id="max" value="#{pantallaBean.paramAuxDouble}" />
+
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('noiseUniformPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<!-- menu noiseGaussiano -->
+	<rich:modalPanel id="noiseGaussianPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkGaussian"
+					styleClass="hidelink" />
+				<rich:componentControl for="noiseGaussianPanel"
+					attachTo="hidelinkGaussian" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noise.gaussian.mean']}" />
+						<h:inputText id="id1" value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.filters.noise.gaussian.sigma']}" />
+						<h:inputText id="id2" value="#{pantallaBean.paramAuxDouble}"
+							validatorMessage="#{tag['validator.noiseGaussian']}">
+							<f:validateDoubleRange minimum="1" />
+						</h:inputText>
+
+					</h:panelGrid>
+				</a4j:outputPanel>
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('noiseGaussianPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+	<!-- menu noiseBinomial -->
+	<rich:modalPanel id="noiseBinomialPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkBinomial"
+					styleClass="hidelink" />
+				<rich:componentControl for="noiseBinomialPanel"
+					attachTo="hidelinkBinomial" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noise.binomial.trials']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}"
+							validatorMessage="#{tag['validator.noiseBinomial.trials']}">
+							<f:validateLongRange minimum="0" />
+						</h:inputText>
+						<h:outputText
+							value="#{tag['menu.filters.noise.binomial.probability']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}"
+							validatorMessage="#{tag['validator.noiseBinomial.probability']}">
+							<f:validateDoubleRange minimum="0" maximum="1" />
+						</h:inputText>
+
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('noiseBinomialPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<!-- menu noiseGamma -->
+	<rich:modalPanel id="noiseGammaPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkGamma"
+					styleClass="hidelink" />
+				<rich:componentControl for="noiseGammaPanel"
+					attachTo="hidelinkGamma" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noise.gamma.order']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}"
+							validatorMessage="#{tag['validator.noiseGamma']}">
+							<f:validateLongRange minimum="1" />
+						</h:inputText>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('noiseGammaPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+	<!-- menu noisePoisson -->
+	<rich:modalPanel id="noisePoissonPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkPoisson"
+					styleClass="hidelink" />
+				<rich:componentControl for="noisePoissonPanel"
+					attachTo="hidelinkPoisson" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noise.poisson.mean']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}"
+							validatorMessage="#{tag['validator.noisePoisson']}">
+							<f:validateLongRange minimum="0" />
+						</h:inputText>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('noisePoissonPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+	<!-- menu noiseSaltAndPepper -->
+	<rich:modalPanel id="noiseSaltAndPepperPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkSaltAndPepper"
+					styleClass="hidelink" />
+				<rich:componentControl for="noiseSaltAndPepperPanel"
+					attachTo="hidelinkSaltAndPepper" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.filters.noise.saltAndPepper.p']}" />
+						<h:inputText id="p" value="#{pantallaBean.paramAuxDouble}"
+							required="true"
+							validatorMessage="#{tag['validator.noiseSaltAndPepper']}">
+							<f:validateDoubleRange minimum="0" maximum="1" />
+						</h:inputText>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('noiseSaltAndPepperPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+	<!-- menu noiseExponential -->
+	<rich:modalPanel id="noiseExponentialPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkExponential"
+					styleClass="hidelink" />
+				<rich:componentControl for="noiseExponentialPanel"
+					attachTo="hidelinkExponential" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.filters.noise.exponential.lambda']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}"
+							ValidatorMessage="#{tag['validator.noiseExponential']}">
+							<f:validateLongRange minimum="1" />
+						</h:inputText>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="Aceptar"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('noiseExponentialPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+	<!-- menu Constrast -->
+	<rich:modalPanel id="constrastPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkConstrast"
+					styleClass="hidelink" />
+				<rich:componentControl for="constrastPanel"
+					attachTo="hidelinkConstrast" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.image.constrast.p']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('constrastPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+
+	<!-- menu Brightness -->
+	<rich:modalPanel id="brightnessPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkBrightness"
+					styleClass="hidelink" />
+				<rich:componentControl for="brightnessPanel"
+					attachTo="hidelinkBrightness" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.image.brightness.p']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('brightnessPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="cannyPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkCannyPanel"
+					styleClass="hidelink" />
+				<rich:componentControl for="cannyPanel"
+					attachTo="hidelinkCannyPanel" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.segmentation.canny.radius']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.segmentation.canny.low']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.segmentation.canny.high']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.segmentation.canny.normalize']}" />
+						<h:selectBooleanCheckbox value="#{pantallaBean.paramAuxBoolean}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('cannyPanel')}.hide();"
+					reRender="table,process,imgSelect,menu,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<!-- menu Segmentation -->
+	<rich:modalPanel id="segmentationPanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkSegmentation"
+					styleClass="hidelink" />
+				<rich:componentControl for="segmentationPanel"
+					attachTo="hidelinkSegmentation" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:selectOneMenu value="#{pantallaBean.paramAuxInt}">
+							<f:selectItem itemValue="1" itemLabel="Prewitt X" />
+							<f:selectItem itemValue="2" itemLabel="Prewitt Y" />
+							<f:selectItem itemValue="3" itemLabel="Prewitt module" />
+							<f:selectItem itemValue="4" itemLabel="Sobel X" />
+							<f:selectItem itemValue="5" itemLabel="Sobel Y" />
+							<f:selectItem itemValue="6" itemLabel="Sobel module" />
+							<f:selectItem itemValue="7" itemLabel="Laplacian" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('segmentationPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<!-- Binarizacion  -->
+
+
+	<rich:modalPanel id="binarizationManualPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hideBinarizationManual"
+					styleClass="hidelink" />
+				<rich:componentControl for="binarizationManualPanel"
+					attachTo="hideBinarizationManual" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.binarization.manual.umbral']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('binarizationManualPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction,menu" />
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+
+	<!-- menu binarizacion local-->
+
+	<rich:modalPanel id="binarizationLocalPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png"
+					id="hidelinkLocalBinarization" styleClass="hidelink" />
+				<rich:componentControl for="binarizationLocalPanel"
+					attachTo="hidelinkLocalBinarization" operation="hide"
+					event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:selectOneMenu value="#{pantallaBean.paramAuxStr}">
+							<f:selectItem itemValue="Bernsen" itemLabel="Bernsen" />
+							<f:selectItem itemValue="Mean"
+								itemLabel="#{tag['menu.binarization.local.mean']}" />
+							<f:selectItem itemValue="Median"
+								itemLabel="#{tag['menu.binarization.local.median']}" />
+							<f:selectItem itemValue="MidGrey" itemLabel="MidGrey" />
+							<f:selectItem itemValue="Niblack" itemLabel="Niblack" />
+							<f:selectItem itemValue="Sauvola" itemLabel="Sauvola" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('binarizationLocalPanel')}.hide();"
+					reRender="table,menu,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="deinterlacePanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkDeinterlacePanel"
+					styleClass="hidelink" />
+				<rich:componentControl for="deinterlacePanel"
+					attachTo="hidelinkDeinterlacePanel" operation="hide"
+					event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:selectOneMenu value="#{pantallaBean.paramAuxInt}">
+							<f:selectItem itemValue="0"
+								itemLabel="#{tag['menu.image.deinterlace.even']}" />
+							<f:selectItem itemValue="1"
+								itemLabel="#{tag['menu.image.deinterlace.odd']}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('deinterlacePanel')}.hide();"
+					reRender="table,menu,process,imgSelect,imgReconstruction" />
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+	<!-- menu binarizacion -->
+	<rich:modalPanel id="binarizationGlobalPanel" autosized="true"
+		width="450">
+
+		<script type="text/javascript">
+		    function handleChange(selection) {
+		    	if(selection=="FuzzyMeanC")
+			        {
+			    		updateParam('1','thresholdFuzzyMeanC');
+						#{rich:component('binarizationGlobalPanel')}.hide();
+						#{rich:component('thresholdFuzzyMeanCPanel')}.show();   		     
+			        }
+		        if(selection=="MatrizCoOcurrencia")
+			        {
+			        	updateParam('2','thresholdMatrizCoOcurrencia');
+						#{rich:component('binarizationGlobalPanel')}.hide();
+						#{rich:component('thresholdMatrizCoOcurrenciaPanel')}.show();
+			        }
+		    }
+		</script>
+		<a4j:region>
+			<h:form id="hiddenForm">
+				<a4j:jsFunction name="updateParam">
+					<a4j:actionparam name="param1" assignTo="#{pantallaBean.numParam}" />
+					<a4j:actionparam name="param2"
+						assignTo="#{pantallaBean.methodCurrent}" />
+				</a4j:jsFunction>
+			</h:form>
+		</a4j:region>
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png"
+					id="hidelinkGlobalBinarization" styleClass="hidelink" />
+				<rich:componentControl for="binarizationGlobalPanel"
+					attachTo="hidelinkGlobalBinarization" operation="hide"
+					event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+
+		<h:form id="GlobalBinarizationSelectForm">
+
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+
+						<h:selectOneMenu id="binarizationGlobalSelect"
+							value="#{pantallaBean.paramAuxStr}"
+							onchange="handleChange(this.value)">
+							<f:selectItem itemValue="Default" itemLabel="Default" />
+							<f:selectItem itemValue="EntropiaJohannsen"
+								itemLabel="EntropiaJohannsen" />
+							<f:selectItem itemValue="Fisher" itemLabel="Fisher" />
+							<f:selectItem itemValue="FuzzyMeanC" itemLabel="FuzzyMeanC" />
+							<f:selectItem itemValue="FuzzyYager" itemLabel="FuzzyYager" />
+							<f:selectItem itemValue="Huang" itemLabel="Huang" />
+							<f:selectItem itemValue="Intermodes" itemLabel="Intermodes" />
+							<f:selectItem itemValue="IsoData" itemLabel="IsoData" />
+							<f:selectItem itemValue="Li" itemLabel="Li" />
+							<f:selectItem itemValue="MatrizCoOcurrencia"
+								itemLabel="MatrizCoOcurrencia" />
+							<f:selectItem itemValue="MaxEntropy" itemLabel="MaxEntropy" />
+							<f:selectItem itemValue="Mean" itemLabel="Mean" />
+							<f:selectItem itemValue="MinError" itemLabel="MinError(I)" />
+							<f:selectItem itemValue="Minimum" itemLabel="Minimum" />
+							<f:selectItem itemValue="Moments" itemLabel="Moments" />
+							<f:selectItem itemValue="Otsu" itemLabel="Otsu" />
+							<f:selectItem itemValue="Percentile" itemLabel="Percentile" />
+							<f:selectItem itemValue="RenyiEntropy" itemLabel="RenyiEntropy" />
+							<f:selectItem itemValue="Shanbhag" itemLabel="Shanbhag" />
+							<f:selectItem itemValue="Triangle" itemLabel="Triangle" />
+							<f:selectItem itemValue="Yen" itemLabel="Yen" />
+						</h:selectOneMenu>
+
+					</h:panelGrid>
+
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="Aceptar"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('binarizationGlobalPanel')}.hide();"
+					reRender="table,menu,process,imgSelect,imgReconstruction">
+
+				</a4j:commandButton>
+
+			</h:panelGrid>
+
+		</h:form>
+
+	</rich:modalPanel>
+
+
+	<!-- NEW BINARIZATION MatrizCoOcurrenciaPanel -->
+	<rich:modalPanel id="thresholdMatrizCoOcurrenciaPanel" autosized="true"
+		width="450" reRender="table,process">
+
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png"
+					id="hidelinkMatrizCoOcurrencia" styleClass="hidelink" />
+				<rich:componentControl for="thresholdMatrizCoOcurrenciaPanel"
+					attachTo="hidelinkMatrizCoOcurrencia" operation="hide"
+					event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.binarization.global.matrizCoOcurrencia.measure']}" />
+
+						<h:selectOneRadio value="#{pantallaBean.paramAuxInt}"
+							required="true">
+							<f:selectItem itemValue="0"
+								itemLabel="#{tag['menu.binarization.global.matrizCoOcurrencia.business']}" />
+							<f:selectItem itemValue="1"
+								itemLabel="#{tag['menu.binarization.global.matrizCoOcurrencia.prob']}" />
+						</h:selectOneRadio>
+						<h:outputText
+							value="#{tag['menu.binarization.global.matrizCoOcurrencia.distance']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+						<!-- <h:inputText value="#{pantallaBean.numParam}" />
+												<h:inputText value="#{pantallaBean.methodCurrent}" /> -->
+
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="Aceptar"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="#{rich:component('thresholdMatrizCoOcurrenciaPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction,menu">
+
+				</a4j:commandButton>
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+	<!-- FuzzyMeanC -->
+	<rich:modalPanel id="thresholdFuzzyMeanCPanel" autosized="true"
+		width="450" reRender="table,process">
+
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkFuzzyMeanC"
+					styleClass="hidelink" />
+				<rich:componentControl for="thresholdFuzzyMeanCPanel"
+					attachTo="hidelinkFuzzyMeanC" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.binarization.global.FuzzyMeanC.tal']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="Aceptar"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="#{rich:component('thresholdFuzzyMeanCPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction,menu">
+
+				</a4j:commandButton>
+
+			</h:panelGrid>
+		</h:form>
+	</rich:modalPanel>
+
+	<!-- seccion equalization  -->
+	<rich:modalPanel id="equalizationLeeLIPPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkLIP"
+					styleClass="hidelink" />
+				<rich:componentControl for="equalizationLeeLIPPanel"
+					attachTo="hidelinkLIP" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.equalization.alpha']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.equalization.beta']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.equalization.lip.size']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('equalizationLeeLIPPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+
+		</h:form>
+
+	</rich:modalPanel>
+	<rich:modalPanel id="equalizationLeePanel" autosized="true" width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkLee"
+					styleClass="hidelink" />
+				<rich:componentControl for="equalizationLeePanel"
+					attachTo="hidelinkLee" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{tag['menu.equalization.alpha']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.equalization.beta']}" />
+						<h:inputText value="#{pantallaBean.paramAuxDouble}" />
+						<h:outputText value="#{tag['menu.equalization.lip.size']}" />
+						<h:inputText value="#{pantallaBean.paramAuxInt}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('equalizationLeePanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+
+		</h:form>
+
+	</rich:modalPanel>
+
+	<rich:modalPanel id="filterMedianWeightPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkMedianWeight"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterMedianWeightPanel"
+					attachTo="hidelinkMedianWeight" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.medianWeight.matriz']}" />
+						<h:inputTextarea value="#{pantallaBean.paramAuxStr}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterMedianWeightPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+	<rich:modalPanel id="filterMeanWeightPanel" autosized="true"
+		width="450">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hidelinkMeanWeight"
+					styleClass="hidelink" />
+				<rich:componentControl for="filterMeanWeightPanel"
+					attachTo="hidelinkMeanWeight" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<h:panelGrid columns="1">
+				<a4j:outputPanel ajaxRendered="true">
+					<h:panelGrid columns="2">
+						<h:outputText
+							value="#{tag['menu.filters.noLineal.meanWeight.matriz']}" />
+						<h:inputTextarea value="#{pantallaBean.paramAuxStr}" />
+					</h:panelGrid>
+				</a4j:outputPanel>
+
+				<a4j:commandButton value="#{tag.accept}"
+					action="#{pantallaBean.execute_method()}"
+					oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('filterMeanWeightPanel')}.hide();"
+					reRender="table,process,imgSelect,imgReconstruction" />
+			</h:panelGrid>
+		</h:form>
+
+	</rich:modalPanel>
+
+
+	<!-- reconstruccion -->
+	<rich:modalPanel id="reconstructionPanel" autosized="true" width="500">
+		<f:facet name="header">
+			<h:outputText value="#{tag.intoParameters}" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" id="hideReconstruction"
+					styleClass="hidelink" />
+				<rich:componentControl for="reconstructionPanel"
+					attachTo="hideReconstruction" operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<rich:messages style="color:red;"></rich:messages>
+			<rich:panel bodyClass="rich-laguna-panel-no-header">
+				<a4j:region>
+					<h:selectOneMenu id="imgReconstruction"
+						value="#{pantallaBean.index}" directInputSuggestions="true">
+						<f:selectItems value="#{pantallaBean.imageType}" var="aux"
+							itemLabel="#{aux.label}" itemValue="#{aux.value}" />
+						<a4j:support event="onclick" />
+					</h:selectOneMenu>
+				</a4j:region>
+			</rich:panel>
+			<a4j:commandButton value="#{tag.accept}"
+				action="#{pantallaBean.execute_method()}"
+				oncomplete="if (#{facesContext.maximumSeverity==null}) #{rich:component('reconstructionPanel')}.hide();"
+				reRender="table,process,imgSelect,tab,imgReconstruction" />
+
+
+		</h:form>
+	</rich:modalPanel>
+
+
+
+	<a4j:status id="status" onstart="#{rich:component('wait')}.show()"
+		onstop="#{rich:component('wait')}.hide()" rerender="false" />
+
+</ui:composition>

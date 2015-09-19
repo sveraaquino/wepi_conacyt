@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<style>
+.active-row {
+	background-color: #FFEBDA;
+}
+</style>
+	<h:form style="FONT-FAMILY: 'DejaVu Sans';">
+		<script type="text/javascript">
+            var row;
+        </script>
+		<a4j:loadBundle var="tag" basename="tags.tags" />
+		<a4j:region>
+			<rich:dataTable value="#{pantallaBean.imagenes}" id="table"
+				var="category" rows="5" rowKeyVar="row" style=" width : 806px;">
+
+				<f:facet name="header">
+					<h:outputText value="#{tag['listaImagenes.table.header']}" />
+				</f:facet>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{tag['listaImagenes.table.column.name']}" />
+					</f:facet>
+					<h:outputText value="#{category.name}" id="name" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{tag['listaImagenes.table.column.type']}" />
+					</f:facet>
+					<h:outputText value="#{category.tipo}" id="tipo" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{tag['listaImagenes.table.column.size']}" />
+					</f:facet>
+					<center>
+						<h:outputText value="#{category.height}x#{category.width}"
+							id="tamanho" />
+					</center>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{tag['listaImagenes.table.column.action']}" />
+
+					</f:facet>
+					<center>
+						<a4j:commandLink ajaxSingle="true" id="usarlink"
+							reRender="process,menu">
+							<h:graphicImage value="/img/Import-32.png" style="border:0" />
+							<f:setPropertyActionListener value="#{category}"
+								target="#{pantallaBean.imageActual}" />
+						</a4j:commandLink>
+						<rich:toolTip for="usarlink" value="#{tag.useImage}" />
+						
+						<a4j:commandLink ajaxSingle="true" id="windowlink"
+							oncomplete="window.open('/PDWEPI/layout/popup.seam','#{category.name}1','width=#{category.width},height=#{category.height},scrollbars=yes');">
+							<h:graphicImage value="/img/Gnome-Colors.png" style="border:0" />
+							<f:setPropertyActionListener value="#{row}"
+								target="#{pantallaBean.filaActual}" />
+						</a4j:commandLink>
+						<rich:toolTip for="windowlink" value="#{tag.windowsImage}" />
+						<a4j:commandLink ajaxSingle="true" id="histlink" action="#{pantallaBean.trueSet()}"
+							oncomplete="window.open('/PDWEPI/layout/histograma.seam','#{category.name}2','width=800,height=500');">
+							<h:graphicImage value="/img/Layer-Histogram.png"
+								style="border:0" />
+							<f:setPropertyActionListener value="#{row}"
+								target="#{pantallaBean.filaActual}" />
+						</a4j:commandLink>&#160;&#160;
+						<rich:toolTip for="histlink" value="#{tag.histogram}" />
+						<a4j:commandLink ajaxSingle="true" id="deletelink"
+							oncomplete="#{rich:component('deletePanel')}.show()">
+							<h:graphicImage value="/img/Gnome-Edit-Delete-32.png"
+								style="border:0" />
+							<f:setPropertyActionListener value="#{row}"
+								target="#{pantallaBean.filaActual}" />
+						</a4j:commandLink>
+						<rich:toolTip for="deletelink" value="#{tag.deleteImage}" />
+					</center>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller renderIfSinglePage="false" maxPages="5" />
+				</f:facet>
+			</rich:dataTable>
+		</a4j:region>
+	</h:form>
+
+	<rich:modalPanel id="deletePanel" autosized="true" width="200">
+		<f:facet name="header">
+			<h:outputText value="#{tag['delete.title']}"
+				style="padding-right:15px;" />
+		</f:facet>
+		<f:facet name="controls">
+			<h:panelGroup>
+				<h:graphicImage value="/img/false.png" styleClass="hidelink"
+					id="hidelink2" />
+				<rich:componentControl for="deletePanel" attachTo="hidelink2"
+					operation="hide" event="onclick" />
+			</h:panelGroup>
+		</f:facet>
+		<h:form>
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td align="center" width="50%"><a4j:commandButton value="#{tag.yes}"
+								ajaxSingle="true" action="#{pantallaBean.delete()}"
+								oncomplete="#{rich:component('deletePanel')}.hide();"
+								reRender="table,process,imgSelect,tab,menu" /></td>
+						<td align="center" width="50%"><a4j:commandButton
+								value="#{tag.cancel}"
+								onclick="#{rich:component('deletePanel')}.hide();return false;" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</h:form>
+	</rich:modalPanel>
+
+	<rich:modalPanel id="wait" autosized="true" width="200" height="120"
+		moveable="false" resizeable="false">
+		<f:facet name="header">
+			<h:outputText value="Processing" />
+		</f:facet>
+		<h:outputText value="Wait Please..." />
+	</rich:modalPanel>
+
+
+
+</ui:composition>

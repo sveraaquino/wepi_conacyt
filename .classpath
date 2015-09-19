@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="WebContent/WEB-INF/dev" path="src/hot"/>
+	<classpathentry kind="src" path="src/main"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/imagescience.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/ij.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/auto_threshold.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/javax.faces.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/javax.el-api-2.2.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/JBoss 7.1 Runtime">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web;jst.jsf"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-7-openjdk-i386">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/jboss-seam-remoting.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/gwt-servlet-1.4.62.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/hibernate-validator-3.1.0.GA.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/hibernate-core-3.3.0.SP1.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/hibernate-commons-annotations-3.1.0.GA.jar"/>
+	<classpathentry kind="lib" path="/home/santiago/Desktop/proyecto_Wepi/WEPI Files/lccaWepi_libs/hibernate-annotations-3.4.0.GA.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

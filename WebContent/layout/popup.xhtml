@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<style>
+.cent {
+	text-align: center;
+}
+
+.rich-menu-item {
+	text-align: left;
+}
+
+.rich-menu-group {
+	text-align: left;
+}
+</style>
+
+<script type="text/javascript">
+
+        function enlarge(){
+
+                document.getElementById('pop').width=document.getElementById('pop').width*1.1;
+
+               document.getElementById('pop').height=document.getElementById('pop').height*1.1;
+
+        }
+
+        function decrease(){
+
+                document.getElementById('pop').width=document.getElementById('pop').width*0.9;
+
+               document.getElementById('pop').height=document.getElementById('pop').height*0.9;
+
+        }
+
+</script>
+
+ 
+	<h:panelGrid columns="1" columnClasses="cent" id="popu" style="border : 5px solid #E4EAEF" >
+
+		<a4j:mediaOutput element="img" mimeType="#{pantallaBean.mimePopup()}"  
+			createContent="#{pantallaBean.popupPaint}"
+			value="1" id="pop" >
+			<f:param value="#{pantallaBean.timeStamp}" name="time" />
+		</a4j:mediaOutput>
+		 <rich:contextMenu event="oncontextmenu" attachTo="pop" submitMode="none" disableDefaultMenu="true">
+            <rich:menuItem value="Zoom In" onclick="enlarge();" id="zin" reRender="pop"/>
+            <rich:menuItem value="Zoom Out" onclick="decrease();" id="zout" reRender="pop"/>
+        </rich:contextMenu>
+
+	</h:panelGrid>
+
+
+</ui:composition>

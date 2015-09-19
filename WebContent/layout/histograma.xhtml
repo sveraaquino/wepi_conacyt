@@ -1,0 +1,163 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+
+	<head>
+
+<a4j:loadScript
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+	type="text/javascript" />
+<a4j:loadScript src="/js/highcharts.js" />
+<a4j:loadScript src="/js/modules/exporting.js" />
+<script type="text/javascript">
+        function renderChart(divId, chartType, chartTitle, chartData, categories){
+            var options = createOption(divId, chartType, chartTitle, categories);            
+            options.series = $.parseJSON(chartData);            
+            var chart = new Highcharts.Chart(options);
+            
+            
+
+        }
+         
+        function createOption(divId, chartType, chartTitle, categories){
+            var options = {
+                colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+                chart: {
+                    backgroundColor: {
+                        linearGradient: [0, 0, 500, 500],
+                        stops: [
+                            [0, 'rgb(255, 255, 255)'],
+                            [1, 'rgb(240, 240, 255)']
+                        ]
+                    },
+                    borderWidth: 2,
+                    plotBackgroundColor: 'rgba(255, 255, 255, .9)',
+                    plotShadow: true,
+                    plotBorderWidth: 1,
+                    renderTo: divId,
+                    type: chartType
+                },
+                title: {
+                    text: 'Histogram',
+                    style: {
+                        color: '#000',
+                        font: 'bold 16px "Trebuchet MS", Verdana, sans-serif'
+                    }
+                },
+                subtitle: {
+                    text: chartTitle,
+                    style: {
+                        color: '#666666',
+                        font: 'bold 12px "Trebuchet MS", Verdana, sans-serif'
+                    }
+                },
+                xAxis: {
+                	minorTickInterval: 'auto',
+                    ridLineWidth: 1,
+                    lineColor: '#000',
+                    tickColor: '#000',
+                    categories: $.parseJSON(categories),
+                    labels: {
+                    	enabled: false,
+                        style: {
+                            color: '#000',
+                            font: '11px Trebuchet MS, Verdana, sans-serif'
+                        },
+                        formatter: function() {
+                            return this.value;
+                        }
+                    },
+                    title: {
+                        style: {
+                            color: '#333',
+                            fontWeight: 'bold',
+                            fontSize: '12px',
+                            fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+
+                        }
+                    }
+                },
+                yAxis: {
+                    minorTickInterval: 'auto',
+                    lineColor: '#000',
+                    lineWidth: 1,
+                    tickWidth: 1,
+                    tickColor: '#000',
+                    title: {
+                        style: {
+                            color: '#333',
+                            fontWeight: 'bold',
+                            fontSize: '12px',
+                            fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+                        },
+                        text: 'Amounts'
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value;
+                        },
+                        style: {
+                            color: '#000',
+                            font: '11px Trebuchet MS, Verdana, sans-serif'
+                        }
+                    }
+                },
+                plotOptions: {
+                    area: {
+                        stacking: 'normal',
+                        lineColor: '#666666',
+                        lineWidth: 1,
+                        marker: {
+                            lineWidth: 1,
+                            lineColor: '#666666'
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function() {
+                        return ''+ this.x +': '+ Highcharts.numberFormat(this.y, 0, ',');
+                    }
+                },
+                legend: {
+                    itemStyle: {
+                        font: '9pt Trebuchet MS, Verdana, sans-serif',
+                        color: 'black'
+
+                    },
+                    itemHoverStyle: {
+                        color: '#039'
+                    },
+                    itemHiddenStyle: {
+                        color: 'gray'
+                    }
+                },
+                labels: {
+                    style: {
+                        color: '#99b'
+                    }
+                },
+                series: []
+            };
+            
+            return options;
+        };
+        
+        </script>
+
+	</head>
+
+	<h:form  prependid="false">
+		<a4j:poll bypassUpdates="true" 
+			oncomplete="renderChart('container','area','${pantallaBean.paramAuxStr}', '${pantallaBean.chartData}', '${pantallaBean.categories}');"
+			enabled="#{pantallaBean.paramAuxBoolean}"
+			action="#{pantallaBean.loadHist}" id="chartvalue_btn"
+			reRender="chartvalue_btn" />
+		<div id="container" style="width: 100%; height: 500px"></div>
+	</h:form>
+
+
+</f:view>

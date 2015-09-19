@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:a="http://richfaces.org/a4j"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   contentType="text/html">
+   
+   <style>
+   body {
+	background: url(#{request.contextPath}/img/background2.png) no-repeat
+		#ECF1EF;
+	background-position: top right;
+	position:;
+	width: 100%;
+	height: auto;
+	min-width: 1024px;
+	min-height: 100%;
+	top: 0;
+	left: 0;
+	margin: 0 auto;
+	padding: 0;
+}
+   </style>
+   
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <title>WEPI</title>
+      <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
+      <a:loadStyle src="/stylesheet/theme.xcss"/>
+      <a:loadStyle src="/stylesheet/theme.css"/>
+      <ui:insert name="head"/>
+   </head>
+   <body>
+      
+      <div class="body">
+         <ui:insert name="body"/>
+      </div>
+      <div class="footer">
+        <p>
+			Copyright © 2013 <a href="http://www.cc.pol.una.py/lcca/">Laboratorio de Computación Científica y Aplicada</a>.
+			Todos los derechos reservados.
+		</p>
+		<p>Tel.(+595) 21 585588/98, Int. 221</p>
+      </div>
+   </body>
+</html>
+</f:view>
